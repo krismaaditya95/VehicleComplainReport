@@ -23,11 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenAction
+import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenState
+import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenViewModel
 import com.krismaaditya.vcr.ui.theme.*
 
 @Composable
 fun AddReportBottomBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    dashboardScreenState: DashboardScreenState,
+    dashboardScreenAction: (DashboardScreenAction) -> Unit,
 ) {
 
     BottomAppBar(
@@ -35,7 +40,7 @@ fun AddReportBottomBar(
     ){
         Button(
             onClick = {
-//                onAddReportClick()
+                dashboardScreenAction(DashboardScreenAction.ShowAddReportBottomSheet)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -51,6 +56,13 @@ fun AddReportBottomBar(
                 text = "Buat Laporan Keluhan Baru",
                 color = cEEEEEE,
                 fontSize = 16.sp
+            )
+        }
+
+        if(dashboardScreenState.isAddReportBottomSheetVisible){
+            AddReportBottomSheet(
+                dashboardScreenState = dashboardScreenState,
+                dashboardScreenAction = dashboardScreenAction
             )
         }
     }

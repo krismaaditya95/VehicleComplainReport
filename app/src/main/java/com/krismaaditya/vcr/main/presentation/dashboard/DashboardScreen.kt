@@ -66,7 +66,10 @@ fun DashboardOverviewCoreScreen(
             )
         },
         bottomBar = {
-            AddReportBottomBar()
+            AddReportBottomBar(
+                dashboardScreenAction = onAction,
+                dashboardScreenState = state
+            )
         }
     ) { innerPadding ->
 //        Column(
@@ -116,7 +119,7 @@ fun DashboardOverviewCoreScreen(
 //        }
 
         when{
-            state.isLoading -> {
+            state.isAllReportLoading -> {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -131,7 +134,7 @@ fun DashboardOverviewCoreScreen(
                 }
             }
 
-            !state.isLoading -> {
+            !state.isAllReportLoading -> {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()

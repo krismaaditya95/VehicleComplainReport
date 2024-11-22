@@ -26,6 +26,14 @@ class DashboardScreenViewModel(
             DashboardScreenAction.LoadAllReports -> loadAllReports()
             DashboardScreenAction.LoadAllVehicles -> loadAllVehicles()
             is DashboardScreenAction.OnAddReport -> TODO()
+            DashboardScreenAction.ShowAddReportBottomSheet -> showAddReportBottomSheet()
+            DashboardScreenAction.HideAddReportBottomSheet -> hideAddReportBottomSheet()
+            DashboardScreenAction.OnFormSaved -> TODO()
+            is DashboardScreenAction.OnReportNoteValueChanged -> {
+                state = state.copy(
+                    note = action.note
+                )
+            }
         }
     }
 
@@ -33,7 +41,7 @@ class DashboardScreenViewModel(
         viewModelScope.launch(Dispatchers.IO) {
 
             state = state.copy(
-                isLoading = true
+                isAllVehicleLoading = true
             )
 
             getAllVehicleUseCase().collect{ result ->
@@ -53,7 +61,7 @@ class DashboardScreenViewModel(
             }
 
             state = state.copy(
-                isLoading = false
+                isAllVehicleLoading = false
             )
         }
     }
@@ -62,7 +70,7 @@ class DashboardScreenViewModel(
         viewModelScope.launch(Dispatchers.IO) {
 
             state = state.copy(
-                isLoading = true
+                isAllReportLoading = true
             )
 
             getAllReportUseCase().collect{ result ->
@@ -81,7 +89,44 @@ class DashboardScreenViewModel(
             }
 
             state = state.copy(
-                isLoading = false
+                isAllReportLoading = false
+            )
+        }
+    }
+
+    private fun showAddReportBottomSheet(){
+        viewModelScope.launch(Dispatchers.IO) {
+            state = state.copy(
+                isAllVehicleLoading = true,
+                isAddReportBottomSheetVisible = true
+            )
+
+            getAllVehicleUseCase().collect{ result ->
+                state = when(result){
+                    is VehicleListResult.Error -> {
+                        state.copy(
+                            isError = true
+                        )
+                    }
+
+                    is VehicleListResult.Success -> {
+                        state.copy(
+                            vehicleList = result.data ?: emptyList()
+                        )
+                    }
+                }
+            }
+
+            state = state.copy(
+                isAllVehicleLoading = false,
+            )
+        }
+    }
+
+    private fun hideAddReportBottomSheet(){
+        viewModelScope.launch(Dispatchers.IO) {
+            state = state.copy(
+                isAddReportBottomSheetVisible = false
             )
         }
     }
