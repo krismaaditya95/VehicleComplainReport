@@ -1,5 +1,7 @@
 package com.krismaaditya.vcr.main.presentation.dashboard
 
+import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +31,12 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.krismaaditya.vcr.config.ScreenRoutes
+import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenViewModel.Companion.CAMERA_PERMISSION
 import com.krismaaditya.vcr.main.presentation.shared.AddReportBottomBar
 import com.krismaaditya.vcr.main.presentation.shared.CustomTopBar
 import com.krismaaditya.vcr.main.presentation.shared.ReportItemWidget
@@ -36,7 +44,10 @@ import com.krismaaditya.vcr.ui.theme.*
 
 @Composable
 fun DashboardScreen(
-    viewModel: DashboardScreenViewModel
+    viewModel: DashboardScreenViewModel,
+    navController: NavHostController,
+//    onTakePictureClick: () -> Unit,
+    activity: Activity
 ) {
     LaunchedEffect(key1 = true) {
         viewModel.onAction(DashboardScreenAction.LoadAllReports)
@@ -44,7 +55,23 @@ fun DashboardScreen(
     
     DashboardOverviewCoreScreen(
         state = viewModel.state,
-        onAction = viewModel::onAction
+        onAction = viewModel::onAction,
+        navController = navController,
+        onTakePictureClick = {
+
+            if(!viewModel.arePermissionGranted(activity)){
+
+                Log.d("ARE PERMISSION GRANTED = ", viewModel.arePermissionGranted(activity).toString())
+                ActivityCompat.requestPermissions(
+                    activity,
+                    CAMERA_PERMISSION,
+                    10
+                )
+            }else{
+                Log.d("[MASUK KE ELSE] ARE PERMISSION GRANTED = ", viewModel.arePermissionGranted(activity).toString())
+                navController.navigate(ScreenRoutes.CameraScreen)
+            }
+        }
     )
 }
 
@@ -52,7 +79,9 @@ fun DashboardScreen(
 @Composable
 fun DashboardOverviewCoreScreen(
     state: DashboardScreenState,
-    onAction: (DashboardScreenAction) -> Unit
+    onAction: (DashboardScreenAction) -> Unit,
+    navController: NavHostController,
+    onTakePictureClick: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
         state = rememberTopAppBarState()
@@ -68,55 +97,12 @@ fun DashboardOverviewCoreScreen(
         bottomBar = {
             AddReportBottomBar(
                 dashboardScreenAction = onAction,
-                dashboardScreenState = state
+                dashboardScreenState = state,
+                navController = navController,
+                onTakePictureClick = onTakePictureClick
             )
         }
     ) { innerPadding ->
-//        Column(
-//            modifier = Modifier
-//                .verticalScroll(rememberScrollState())
-//                .padding(innerPadding)
-//                .fillMaxSize()
-//                .border(1.dp, cDC5F00)
-//        ){
-//            Spacer(modifier = Modifier.height(4.dp))
-//
-//            when{
-//                state.isLoading -> {
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .fillMaxHeight()
-//                    ){
-//                        CircularProgressIndicator(
-//                            modifier = Modifier
-//                                .width(40.dp)
-//                                .align(Alignment.Center),
-//                            color = cDC5F00
-//                        )
-//                    }
-//                }
-//
-//                !state.isLoading -> {
-//                    LazyColumn(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-////                            .fillMaxHeight()
-//                            .height(400.dp)
-//                            .padding(start = 14.dp, end = 14.dp),
-////                            .border(1.dp, cDC5F00),
-//                        contentPadding = PaddingValues(top = 14.dp)
-//                    ) {
-//                        itemsIndexed(state.reportList){ index, item ->
-//                            ReportItemWidget(
-//                                modifier = Modifier.fillParentMaxHeight(),
-//                                reportItem = item
-//                            )
-//                        }
-//                    }
-//                }
-//            }
-//        }
 
         when{
             state.isAllReportLoading -> {
@@ -164,5 +150,7 @@ fun DashboardOverviewScreenPreview(modifier: Modifier = Modifier) {
     DashboardOverviewCoreScreen(
         state = DashboardScreenState(),
         onAction = {},
+        navController = rememberNavController(),
+        onTakePictureClick = {}
     )
 }

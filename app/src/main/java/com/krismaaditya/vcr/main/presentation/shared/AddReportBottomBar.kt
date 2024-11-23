@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenAction
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenState
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenViewModel
@@ -33,6 +34,8 @@ fun AddReportBottomBar(
     modifier: Modifier = Modifier,
     dashboardScreenState: DashboardScreenState,
     dashboardScreenAction: (DashboardScreenAction) -> Unit,
+    navController: NavHostController,
+    onTakePictureClick: () -> Unit
 ) {
 
     BottomAppBar(
@@ -62,7 +65,9 @@ fun AddReportBottomBar(
         if(dashboardScreenState.isAddReportBottomSheetVisible){
             AddReportBottomSheet(
                 dashboardScreenState = dashboardScreenState,
-                dashboardScreenAction = dashboardScreenAction
+                dashboardScreenAction = dashboardScreenAction,
+                navController = navController,
+                onTakePictureClick = onTakePictureClick
             )
         }
     }

@@ -1,9 +1,12 @@
 package com.krismaaditya.vcr.core.bindings
 
+import com.krismaaditya.vcr.main.data.repository.CameraRepositoryImpl
 import com.krismaaditya.vcr.main.data.repository.ReportListRepositoryImpl
 import com.krismaaditya.vcr.main.data.repository.VehicleListRepositoryImpl
+import com.krismaaditya.vcr.main.domain.repository.CameraRepository
 import com.krismaaditya.vcr.main.domain.repository.ReportListRepository
 import com.krismaaditya.vcr.main.domain.repository.VehicleListRepository
+import com.krismaaditya.vcr.main.domain.usecase.CameraUseCase
 import com.krismaaditya.vcr.main.domain.usecase.GetAllReportUseCase
 import com.krismaaditya.vcr.main.domain.usecase.GetAllVehicleUseCase
 import io.ktor.client.HttpClient
@@ -32,10 +35,6 @@ val mainBindings = module {
         HttpClient(CIO){
 
             expectSuccess = true
-
-//            engine {
-//                pipelining = true
-//            }
 
             install(HttpTimeout){
                 requestTimeoutMillis = 60000
@@ -70,6 +69,7 @@ val mainBindings = module {
 
     singleOf(::VehicleListRepositoryImpl).bind<VehicleListRepository>()
     singleOf(::ReportListRepositoryImpl).bind<ReportListRepository>()
+    singleOf(::CameraRepositoryImpl).bind<CameraRepository>()
 
     single{
         GetAllVehicleUseCase(get())
@@ -77,5 +77,9 @@ val mainBindings = module {
 
     single{
         GetAllReportUseCase(get())
+    }
+
+    single{
+        CameraUseCase(get())
     }
 }

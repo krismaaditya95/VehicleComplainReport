@@ -37,7 +37,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.krismaaditya.vcr.config.ScreenRoutes
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenAction
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenState
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenViewModel
@@ -53,6 +56,8 @@ fun AddReportForm(
     modifier: Modifier = Modifier,
     dashboardScreenState: DashboardScreenState,
     dashboardScreenAction: (DashboardScreenAction) -> Unit,
+    navController: NavHostController,
+    onTakePictureClick: () -> Unit
 ) {
 
     Column {
@@ -229,7 +234,8 @@ fun AddReportForm(
             Column {
                 Button(
                     onClick = {
-                        //                onAddReportClick()
+//                        navController.navigate(ScreenRoutes.CameraScreen)
+                        onTakePictureClick()
                     },
                     modifier = Modifier
                         .height(40.dp)
@@ -247,25 +253,23 @@ fun AddReportForm(
                     )
                 }
 
-                Button(
-                    onClick = {
-                        //                onAddReportClick()
-                    },
-                    modifier = Modifier
-                        .height(40.dp)
-                        .padding(start = 14.dp),
-                    colors = ButtonDefaults
-                        .buttonColors(
-                            containerColor = cmykRed
-                        ),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        text = "Ambil Dari Galeri",
-                        color = cEEEEEE,
-                        fontSize = 12.sp
-                    )
-                }
+//                Button(
+//                    onClick = { },
+//                    modifier = Modifier
+//                        .height(40.dp)
+//                        .padding(start = 14.dp),
+//                    colors = ButtonDefaults
+//                        .buttonColors(
+//                            containerColor = cmykRed
+//                        ),
+//                    shape = RoundedCornerShape(8.dp)
+//                ) {
+//                    Text(
+//                        text = "Ambil Dari Galeri",
+//                        color = cEEEEEE,
+//                        fontSize = 12.sp
+//                    )
+//                }
             }
         }
 

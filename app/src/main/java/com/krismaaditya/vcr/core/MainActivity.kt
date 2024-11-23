@@ -1,5 +1,6 @@
 package com.krismaaditya.vcr.core
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,21 +8,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.krismaaditya.vcr.config.ScreenRoutes
+import com.krismaaditya.vcr.main.presentation.camera.CameraScreen
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreen
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenViewModel
+import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenViewModel.Companion.CAMERA_PERMISSION
 import com.krismaaditya.vcr.ui.theme.VehicleComplainReportTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -33,14 +32,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             VehicleComplainReportTheme {
                 val navController = rememberNavController()
-//                MainActivityCoreScreen(
-//                    navController = navController
-//                )
 
                 Navigator(
                     modifier = Modifier
                         .fillMaxSize(),
                     navController = navController,
+                    activity = this
                 )
             }
         }
@@ -70,7 +67,8 @@ class MainActivity : ComponentActivity() {
 fun Navigator(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    dashboardScreenViewModel: DashboardScreenViewModel = koinViewModel()
+    dashboardScreenViewModel: DashboardScreenViewModel = koinViewModel(),
+    activity: Activity
 ) {
 
     NavHost(
@@ -87,6 +85,23 @@ fun Navigator(
         composable<ScreenRoutes.DashboardScreen>{
             DashboardScreen(
                 viewModel = dashboardScreenViewModel,
+                navController = navController,
+                activity = activity
+//                onTakePictureClick = {
+//                    if(dashboardScreenViewModel.arePermissionGranted(activity)){
+//                        ActivityCompat.requestPermissions(
+//                            activity,
+//                            CAMERA_PERMISSION,
+//                            10
+//                        )
+//                    }
+//                }
+            )
+        }
+
+        composable<ScreenRoutes.CameraScreen>{
+            CameraScreen(
+                activity = activity
             )
         }
     }

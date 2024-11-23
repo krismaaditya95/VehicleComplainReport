@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenAction
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenState
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenViewModel
@@ -34,6 +35,8 @@ fun AddReportBottomSheet(
     modifier: Modifier = Modifier,
     dashboardScreenState: DashboardScreenState,
     dashboardScreenAction: (DashboardScreenAction) -> Unit,
+    navController: NavHostController,
+    onTakePictureClick: () -> Unit
 ) {
 
     val sheetState = rememberModalBottomSheetState(
@@ -90,7 +93,9 @@ fun AddReportBottomSheet(
                 !dashboardScreenState.isAllVehicleLoading ->{
                     AddReportForm(
                         dashboardScreenState = dashboardScreenState,
-                        dashboardScreenAction = dashboardScreenAction
+                        dashboardScreenAction = dashboardScreenAction,
+                        navController = navController,
+                        onTakePictureClick = onTakePictureClick
                     )
                 }
             }

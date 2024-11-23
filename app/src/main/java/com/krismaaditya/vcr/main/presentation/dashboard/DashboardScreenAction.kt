@@ -11,6 +11,8 @@ sealed interface DashboardScreenAction {
 
     data object HideAddReportBottomSheet: DashboardScreenAction
 
+    data object StartCameraService: DashboardScreenAction
+
     data class OnReportNoteValueChanged(
         val note: String
     ): DashboardScreenAction

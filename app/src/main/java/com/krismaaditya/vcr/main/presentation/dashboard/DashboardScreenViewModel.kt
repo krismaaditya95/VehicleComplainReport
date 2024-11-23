@@ -1,8 +1,13 @@
 package com.krismaaditya.vcr.main.presentation.dashboard
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.krismaaditya.vcr.main.domain.repository.ReportListResult
@@ -11,9 +16,9 @@ import com.krismaaditya.vcr.main.domain.usecase.GetAllReportUseCase
 import com.krismaaditya.vcr.main.domain.usecase.GetAllVehicleUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.ZonedDateTime
 
 class DashboardScreenViewModel(
+    private val appContext: Context,
     private val getAllVehicleUseCase: GetAllVehicleUseCase,
     private val getAllReportUseCase: GetAllReportUseCase
 ) : ViewModel(){
@@ -34,6 +39,24 @@ class DashboardScreenViewModel(
                     note = action.note
                 )
             }
+
+            DashboardScreenAction.StartCameraService -> TODO()
+        }
+    }
+
+    companion object {
+        val CAMERA_PERMISSION = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO
+        )
+    }
+
+    fun arePermissionGranted(activity: Activity): Boolean{
+        return CAMERA_PERMISSION.all { permission ->
+            ContextCompat.checkSelfPermission(
+                activity.applicationContext,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
         }
     }
 
