@@ -1,5 +1,6 @@
 package com.krismaaditya.vcr.main.presentation.dashboard
 
+import android.graphics.Bitmap
 import com.krismaaditya.vcr.main.domain.entity.ReportEntity
 import com.krismaaditya.vcr.main.domain.entity.VehicleEntity
 import java.time.ZonedDateTime
@@ -17,5 +18,8 @@ data class DashboardScreenState(
     val currentDate: String = DateTimeFormatter.ofPattern("dd-MMMM-yyyy").format(ZonedDateTime.now()),
     val selectedVehicle: String = "Pilih Kendaraan",
     val note: String = "",
-    val imageUri: String = "https://static.thenounproject.com/png/4619810-200.png"
+    val imageUri: String = "https://static.thenounproject.com/png/4619810-200.png",
+    val isCaptureLoading: Boolean = false,
+    val isCaptureError: Boolean = false,
+    val rawBitmap: Bitmap? = null
 )

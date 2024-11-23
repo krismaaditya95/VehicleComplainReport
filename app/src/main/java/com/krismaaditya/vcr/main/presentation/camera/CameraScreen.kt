@@ -2,6 +2,7 @@ package com.krismaaditya.vcr.main.presentation.camera
 
 import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
@@ -14,13 +15,18 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,7 +36,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenAction
+import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenState
+import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenViewModel
 import com.krismaaditya.vcr.ui.theme.cDC5F00
+import com.krismaaditya.vcr.ui.theme.cmykRed
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.ui.tooling.preview.Preview as ComposePreview
 
@@ -39,7 +49,9 @@ import androidx.compose.ui.tooling.preview.Preview as ComposePreview
 fun CameraScreen(
     modifier: Modifier = Modifier,
     activity: Activity,
-    cameraScreenViewModel: CameraScreenViewModel = koinViewModel()
+    dashboardScreenViewModel: DashboardScreenViewModel,
+    state: DashboardScreenState = dashboardScreenViewModel.state,
+    onImageCaptured: () -> Unit
 ) {
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -59,7 +71,8 @@ fun CameraScreen(
 
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
+            .height(472.dp)
             .background(Color.Black)
             .border(1.dp, cDC5F00)
     ){
@@ -107,23 +120,62 @@ fun CameraScreen(
         horizontalArrangement = Arrangement.Center
         ){
 
-            FloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically),
-                onClick = {
-                    cameraScreenViewModel.onAction(CameraScreenAction.TakePicture(
-                        imageCapture = imageCapture,
-                        activity = activity
-                    ))
-                },
-                containerColor = cDC5F00
-            ) {
+            when{
+                state.isCaptureLoading ->{
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .width(40.dp)
+                            .align(Alignment.CenterVertically),
+                        color = cDC5F00
+                    )
+                }
 
-                Icon(
-                    imageVector = Icons.Filled.CameraAlt,
-                    contentDescription = "Take Picture"
-                )
+                !state.isCaptureLoading ->{
+                    FloatingActionButton(
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically),
+                        onClick = {
+                            Toast.makeText(activity.applicationContext, "Capturing...", Toast.LENGTH_LONG).show()
+                            dashboardScreenViewModel.onAction(DashboardScreenAction.TakePicture(
+                                imageCapture = imageCapture,
+                                activity = activity,
+                                callback = onImageCaptured
+                            ))
+                        },
+                        containerColor = cDC5F00
+                    ) {
+
+                        Icon(
+                            imageVector = Icons.Filled.CameraAlt,
+                            contentDescription = "Take Picture"
+                        )
+                    }
+
+                    Text(
+                        text = "Bitmap : ${dashboardScreenViewModel.state.rawBitmap}",
+                        color = cmykRed
+                    )
+                }
             }
+
+//            FloatingActionButton(
+//                modifier = Modifier
+//                    .align(Alignment.CenterVertically),
+//                onClick = {
+//                    Toast.makeText(activity.applicationContext, "Capturing...", Toast.LENGTH_LONG).show()
+//                    dashboardScreenViewModel.onAction(DashboardScreenAction.TakePicture(
+//                        imageCapture = imageCapture,
+//                        activity = activity
+//                    ))
+//                },
+//                containerColor = cDC5F00
+//            ) {
+//
+//                Icon(
+//                    imageVector = Icons.Filled.CameraAlt,
+//                    contentDescription = "Take Picture"
+//                )
+//            }
         }
     }
 }

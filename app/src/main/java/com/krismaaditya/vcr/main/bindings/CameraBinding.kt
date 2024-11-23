@@ -6,6 +6,6 @@ import org.koin.dsl.module
 
 val cameraBinding = module {
     viewModel {
-        CameraScreenViewModel(get(), get())
+        CameraScreenViewModel(get())
     }
 }

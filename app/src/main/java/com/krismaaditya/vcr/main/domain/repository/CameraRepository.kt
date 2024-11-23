@@ -5,6 +5,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import androidx.camera.core.ImageCapture
 import androidx.camera.view.LifecycleCameraController
+import kotlinx.coroutines.flow.Flow
 
 interface CameraRepository{
 
@@ -12,9 +13,14 @@ interface CameraRepository{
 //        controller: LifecycleCameraController
 //    )
 
+//    suspend fun takePicturev2(
+//        imageCapture: ImageCapture?,
+//        activity: Activity
+//    ): Bitmap?
+
     suspend fun takePicturev2(
         imageCapture: ImageCapture?,
         activity: Activity
-    ): Bitmap?
+    ): Flow<CameraResult<Bitmap>>
 
 }

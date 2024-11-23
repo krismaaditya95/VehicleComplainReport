@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -206,6 +207,24 @@ fun AddReportForm(
             )
         )
 
+        // -------------
+        // FOR DEBUG
+        // -------------
+
+        Box(
+            modifier = Modifier
+                .border(1.dp, cDC5F00)
+        ){
+            Text(
+                text = "RAW BITMAP : ${dashboardScreenState.rawBitmap.toString()}",
+                color = cDC5F00,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier
+                    .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
+            )
+        }
+
         // ----------------
         // Dokumen Laporan
         // ----------------
@@ -227,7 +246,7 @@ fun AddReportForm(
                     .width(100.dp)
                     .height(100.dp)
                     .border(1.dp, cDC5F00, shape = RoundedCornerShape(4.dp)),
-                model = dashboardScreenState.imageUri,
+                model = dashboardScreenState.rawBitmap,
                 contentDescription = "",
             )
 

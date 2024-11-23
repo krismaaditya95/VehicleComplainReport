@@ -1,5 +1,9 @@
 package com.krismaaditya.vcr.main.presentation.dashboard
 
+import android.app.Activity
+import androidx.camera.core.ImageCapture
+import com.krismaaditya.vcr.main.presentation.camera.CameraScreenAction
+
 sealed interface DashboardScreenAction {
     data object LoadAllReports: DashboardScreenAction
 
@@ -15,6 +19,12 @@ sealed interface DashboardScreenAction {
 
     data class OnReportNoteValueChanged(
         val note: String
+    ): DashboardScreenAction
+
+    data class TakePicture(
+        val imageCapture: ImageCapture?,
+        val activity: Activity,
+        val callback: () -> Unit
     ): DashboardScreenAction
 
     data object OnFormSaved: DashboardScreenAction

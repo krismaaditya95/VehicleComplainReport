@@ -7,6 +7,7 @@ sealed interface CameraScreenAction {
 
     data class TakePicture(
         val imageCapture: ImageCapture?,
-        val activity: Activity
+        val activity: Activity,
+        val callback: () -> Unit,
     ): CameraScreenAction
 }

@@ -101,7 +101,11 @@ fun Navigator(
 
         composable<ScreenRoutes.CameraScreen>{
             CameraScreen(
-                activity = activity
+                activity = activity,
+                dashboardScreenViewModel = dashboardScreenViewModel,
+                onImageCaptured = {
+                    navController.popBackStack()
+                }
             )
         }
     }
