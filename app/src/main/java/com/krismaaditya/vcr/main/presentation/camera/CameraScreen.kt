@@ -78,8 +78,8 @@ fun CameraScreen(
     ){
 
         AndroidView(
-            modifier = Modifier
-                .border(1.dp, cDC5F00),
+//            modifier = Modifier
+//                .border(1.dp, cDC5F00),
             factory = { it ->
 
                 PreviewView(it).apply {
@@ -136,7 +136,7 @@ fun CameraScreen(
                         modifier = Modifier
                             .align(Alignment.CenterVertically),
                         onClick = {
-                            Toast.makeText(activity.applicationContext, "Capturing...", Toast.LENGTH_LONG).show()
+//                            Toast.makeText(activity.applicationContext, "Capturing...", Toast.LENGTH_LONG).show()
                             dashboardScreenViewModel.onAction(DashboardScreenAction.TakePicture(
                                 imageCapture = imageCapture,
                                 activity = activity,

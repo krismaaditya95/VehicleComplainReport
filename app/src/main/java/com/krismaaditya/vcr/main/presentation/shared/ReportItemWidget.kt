@@ -2,21 +2,23 @@ package com.krismaaditya.vcr.main.presentation.shared
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.MailOutline
-import androidx.compose.material.icons.sharp.Person
-import androidx.compose.material.icons.sharp.ShoppingCart
-import androidx.compose.material.icons.sharp.Warning
+import androidx.compose.material.icons.rounded.DirectionsCar
+import androidx.compose.material.icons.rounded.NoteAlt
+import androidx.compose.material.icons.rounded.Person4
+import androidx.compose.material.icons.rounded.Warning
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -24,6 +26,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -48,10 +52,12 @@ fun ReportItemWidget(
             onClick = { },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(280.dp)
-                .padding(bottom = 14.dp)
-                .border(1.dp, cC73659, RoundedCornerShape(4.dp)),
-            shape = RoundedCornerShape(4.dp),
+                .height(340.dp)
+                .padding(bottom = 10.dp),
+            shape = RoundedCornerShape(8.dp),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )
         ) {
             Column {
 
@@ -60,22 +66,30 @@ fun ReportItemWidget(
                 // -------------------
                 Row(
                     modifier = Modifier
-                        //                    .border(1.dp, cDC5F00)
                         .fillMaxWidth()
                         .padding(14.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    //            horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Row(
                         modifier = Modifier
-                            //                        .border(1.dp, cmykBlue)
                             .weight(0.7f),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Icon(
-                            imageVector = Icons.Sharp.Warning,
-                            contentDescription = ""
-                        )
+
+                        Box (
+                            modifier = Modifier
+                                .padding(start = 4.dp, end = 4.dp, )
+                                .clip(CircleShape)
+                                .size(34.dp)
+                                .background(cC73659)
+                        ){
+                            Icon(
+                                modifier = Modifier
+                                    .align(Alignment.Center),
+                                imageVector = Icons.Rounded.Warning,
+                                contentDescription = "",
+                            )
+                        }
 
                         Column(
                             modifier = Modifier
@@ -93,7 +107,8 @@ fun ReportItemWidget(
 
                             Text(
                                 text = reportItem.reportId,
-                                fontSize = 10.sp
+                                fontSize = 10.sp,
+                                color = cC73659
                             )
                         }
                     }
@@ -101,32 +116,37 @@ fun ReportItemWidget(
 
                     Column(
                         modifier = Modifier
-                            //                        .border(1.dp, cmykBlue)
                             .weight(0.3f),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
                             text = StringDateFormatter.toDayMonthYearAtHourMinute(reportItem.createdAt),
                             textAlign = TextAlign.Center,
-                            fontSize = 12.sp,
-                            maxLines = 1,
+                            fontSize = 10.sp,
+                            maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .padding(bottom = 4.dp)
                                 .align(Alignment.CenterHorizontally)
                         )
 
-                        Text(
+                        Box (
                             modifier = Modifier
-                                .border(1.dp, cmykGreen)
-                                .background(cmykGreen)
-                                .padding(start = 20.dp, top = 2.dp, end = 20.dp, bottom = 2.dp),
-                            text = reportItem.reportStatus,
-                            textAlign = TextAlign.Center,
-                            color = cEEEEEE,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 12.sp,
-                        )
+                                .padding(end = 10.dp, start = 10.dp)
+                                .clip((RoundedCornerShape(5.dp)))
+                                .fillMaxWidth()
+                                .background(cmykGreen),
+                        ){
+                            Text(
+                                modifier = Modifier
+                                    .align(Alignment.Center),
+                                text = reportItem.reportStatus,
+                                textAlign = TextAlign.Center,
+                                color = cEEEEEE,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 12.sp,
+                            )
+                        }
                     }
                 }
                 HorizontalDivider()
@@ -136,14 +156,12 @@ fun ReportItemWidget(
                 // -------------------
                 Row(
                     modifier = Modifier
-                        //                    .border(1.dp, cDC5F00)
                         .fillMaxWidth()
                         .padding(14.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Row(
                         modifier = Modifier
-                            //                        .border(1.dp, cmykBlue)
                             .weight(0.7f),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -154,13 +172,15 @@ fun ReportItemWidget(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = Icons.Sharp.ShoppingCart,
+                                    modifier = Modifier
+                                        .padding(end = 8.dp),
+                                    imageVector = Icons.Rounded.DirectionsCar,
                                     contentDescription = ""
                                 )
                                 Text(
                                     text = reportItem.vehicleName,
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.SemiBold,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                     modifier = Modifier
@@ -172,85 +192,15 @@ fun ReportItemWidget(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = Icons.Sharp.Person,
+                                    modifier = Modifier
+                                        .padding(end = 8.dp),
+                                    imageVector = Icons.Rounded.Person4,
                                     contentDescription = ""
                                 )
                                 Text(
-                                    text = "Dilaporkan oleh : ${reportItem.createdBy}",
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    modifier = Modifier
-                                        .padding(bottom = 4.dp)
-                                )
-                            }
-                        }
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.Top)
-                            .weight(0.3f)
-                        //                        .border(1.dp, cmykBlue)
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .border(1.dp, c151515, shape = RoundedCornerShape(4.dp))
-                                .align(Alignment.Center)
-                                .padding(start = 10.dp, top = 6.dp, end = 10.dp, bottom = 6.dp),
-                            text = reportItem.vehicleId,
-                            textAlign = TextAlign.Center,
-                            color = c151515,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 12.sp,
-                        )
-                    }
-                }
-                HorizontalDivider()
-
-
-                // -------------------
-                // BOTTOM SECTION
-                // -------------------
-                Row(
-                    modifier = Modifier
-                        //                    .border(1.dp, cDC5F00)
-                        .fillMaxWidth()
-                        .padding(14.dp),
-                    verticalAlignment = Alignment.Top,
-                ) {
-                    Row(
-                        modifier = Modifier
-                            //                        .border(1.dp, cmykBlue)
-                            .weight(0.7f),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .padding(bottom = 14.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                modifier = Modifier
-                                    .align(Alignment.Top),
-                                imageVector = Icons.Sharp.MailOutline,
-                                contentDescription = ""
-                            )
-                            Column {
-                                Text(
-                                    text = "Catatan Keluhan :",
-                                    fontSize = 14.sp,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier
-                                        .padding(bottom = 4.dp)
-                                )
-
-                                Text(
-                                    text = reportItem.note,
+                                    text = reportItem.createdBy,
                                     fontSize = 12.sp,
+                                    fontWeight = FontWeight.SemiBold,
                                     maxLines = 2,
                                     overflow = TextOverflow.Ellipsis,
                                     modifier = Modifier
@@ -264,10 +214,80 @@ fun ReportItemWidget(
                         modifier = Modifier
                             .align(Alignment.Top)
                             .weight(0.3f)
-                        //                        .border(1.dp, cmykBlue)
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .border(1.dp, cDC5F00, shape = RoundedCornerShape(4.dp))
+                                .align(Alignment.Center)
+                                .padding(start = 10.dp, top = 6.dp, end = 10.dp, bottom = 6.dp),
+                            text = reportItem.vehicleLicenseNumber,
+                            textAlign = TextAlign.Center,
+                            color = cDC5F00,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 12.sp,
+                        )
+                    }
+                }
+                HorizontalDivider()
+
+
+                // -------------------
+                // BOTTOM SECTION
+                // -------------------
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(14.dp),
+                    verticalAlignment = Alignment.Top,
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .weight(0.7f),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .padding(bottom = 14.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                modifier = Modifier
+                                    .align(Alignment.Top)
+                                    .padding(end = 8.dp),
+                                imageVector = Icons.Rounded.NoteAlt,
+                                contentDescription = ""
+                            )
+                            Column {
+                                Text(
+                                    text = "Catatan Keluhan :",
+                                    fontSize = 12.sp,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier
+                                        .padding(bottom = 4.dp)
+                                )
+
+                                Text(
+                                    text = reportItem.note,
+                                    fontSize = 12.sp,
+                                    maxLines = 3,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier
+                                        .padding(bottom = 4.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.Top)
+                            .weight(0.3f)
                     ) {
                         AsyncImage(
-                            //                        model = "https://storage.googleapis.com/fleetifyid_images_staging/android/YPAj9mvmMNRnpR7yJ0IIk5teTWwYkl/REPORT-80123228.jpg",
+                            modifier = Modifier
+                                .fillMaxSize(),
                             model = reportItem.photo,
                             contentDescription = "",
                         )

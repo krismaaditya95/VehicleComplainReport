@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.rounded.DirectionsCar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -41,19 +42,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.krismaaditya.vcr.config.ScreenRoutes
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenAction
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenState
-import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenViewModel
 import com.krismaaditya.vcr.ui.theme.cC73659
 import com.krismaaditya.vcr.ui.theme.cDC5F00
 import com.krismaaditya.vcr.ui.theme.cEEEEEE
 import com.krismaaditya.vcr.ui.theme.cmykGreen
 import com.krismaaditya.vcr.ui.theme.cmykRed
-import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
@@ -92,10 +89,10 @@ fun AddReportForm(
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)
                 .height(60.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = cmykGreen,
-                focusedBorderColor = cmykGreen
-            )
+//            colors = OutlinedTextFieldDefaults.colors(
+//                unfocusedBorderColor = cmykGreen,
+//                focusedBorderColor = cmykGreen
+//            )
         )
 
 
@@ -106,7 +103,6 @@ fun AddReportForm(
 
         OutlinedTextField(
             value = dashboardScreenState.selectedVehicle.type,
-//            value = "Pilih Kendaraan",
             onValueChange = {
 
             },
@@ -116,7 +112,7 @@ fun AddReportForm(
                     onClick = {}
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ShoppingCart,
+                        imageVector = Icons.Rounded.DirectionsCar,
                         contentDescription = "Selected Vehicle"
                     )
                 }
@@ -146,10 +142,10 @@ fun AddReportForm(
                     }
                 }
                 .height(60.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = cmykGreen,
-                focusedBorderColor = cmykGreen
-            )
+//            colors = OutlinedTextFieldDefaults.colors(
+//                unfocusedBorderColor = cmykGreen,
+//                focusedBorderColor = cmykGreen
+//            )
         )
         DropdownMenu(
             modifier = Modifier
@@ -180,22 +176,25 @@ fun AddReportForm(
         // -------------------
         OutlinedTextField(
             value = dashboardScreenState.note,
-            prefix = {
-                Row {
-                    IconButton(
-                        onClick = {},
-                        modifier = Modifier
-                            .align(Alignment.Top)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = "Date"
-                        )
-                    }
-
-                    Text(text = "Catatan Keluhan :")
-                }
+            label = {
+                Text(text = "Catatan Keluhan :")
             },
+//            prefix = {
+//                Row {
+//                    IconButton(
+//                        onClick = {},
+//                        modifier = Modifier
+//                            .align(Alignment.Top)
+//                    ) {
+//                        Icon(
+//                            imageVector = Icons.Default.Edit,
+//                            contentDescription = "Date"
+//                        )
+//                    }
+//
+//                    Text(text = "Catatan Keluhan :")
+//                }
+//            },
 
             onValueChange = { newValue ->
                 dashboardScreenAction(DashboardScreenAction.OnReportNoteValueChanged(newValue))
@@ -219,46 +218,14 @@ fun AddReportForm(
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)
                 .height(160.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = cmykGreen,
-                focusedBorderColor = cmykGreen
-            ),
+//            colors = OutlinedTextFieldDefaults.colors(
+//                unfocusedBorderColor = cmykGreen,
+//                focusedBorderColor = cmykGreen
+//            ),
 //            supportingText = {
 //
 //            }
         )
-
-        // -------------
-        // FOR DEBUG
-        // -------------
-
-        Box(
-            modifier = Modifier
-                .border(1.dp, cDC5F00)
-        ){
-            Text(
-                text = "Image Uri : ${dashboardScreenState.imageUri}",
-                color = cDC5F00,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
-            )
-        }
-
-        Box(
-            modifier = Modifier
-                .border(1.dp, cDC5F00)
-        ){
-            Text(
-                text = "Selected Vehicle ID : ${dashboardScreenState.selectedVehicle.vehicleId}",
-                color = cDC5F00,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
-            )
-        }
 
         // ----------------
         // Dokumen Laporan
@@ -269,7 +236,7 @@ fun AddReportForm(
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier
-                .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
+                .padding(top = 8.dp, bottom = 8.dp)
         )
         Row(
             modifier = Modifier
@@ -277,7 +244,6 @@ fun AddReportForm(
         ){
             AsyncImage(
                 modifier = Modifier
-                    .padding(start = 14.dp)
                     .width(100.dp)
                     .height(100.dp)
                     .border(1.dp, cDC5F00, shape = RoundedCornerShape(4.dp)),
@@ -288,7 +254,6 @@ fun AddReportForm(
             Column {
                 Button(
                     onClick = {
-//                        navController.navigate(ScreenRoutes.CameraScreen)
                         onTakePictureClick()
                     },
                     modifier = Modifier
@@ -306,24 +271,6 @@ fun AddReportForm(
                         fontSize = 12.sp
                     )
                 }
-
-//                Button(
-//                    onClick = { },
-//                    modifier = Modifier
-//                        .height(40.dp)
-//                        .padding(start = 14.dp),
-//                    colors = ButtonDefaults
-//                        .buttonColors(
-//                            containerColor = cmykRed
-//                        ),
-//                    shape = RoundedCornerShape(8.dp)
-//                ) {
-//                    Text(
-//                        text = "Ambil Dari Galeri",
-//                        color = cEEEEEE,
-//                        fontSize = 12.sp
-//                    )
-//                }
             }
         }
 
@@ -337,13 +284,16 @@ fun AddReportForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(80.dp)
-                .padding(14.dp),
+                .padding(top = 14.dp, bottom = 14.dp),
             colors = ButtonDefaults
                 .buttonColors(
                     containerColor = cmykRed
                 ),
             shape = RoundedCornerShape(8.dp),
-            enabled = !dashboardScreenState.isFormSubmitLoading
+            enabled =
+
+            !dashboardScreenState.isFormSubmitLoading && (dashboardScreenState.selectedVehicle.vehicleId != "" &&
+                    dashboardScreenState.note != "" && dashboardScreenState.imageUri != "")
         ) {
 
             when{
@@ -355,8 +305,6 @@ fun AddReportForm(
                         CircularProgressIndicator(
                             modifier = Modifier
                                 .width(20.dp),
-//                                .align(Alignment.CenterVertically)
-//                                .padding(end = 10.dp),
                             color = cC73659
                         )
 
@@ -372,7 +320,11 @@ fun AddReportForm(
                 !dashboardScreenState.isFormSubmitLoading -> {
                     Text(
                         text = "Kirim Laporan",
-                        color = cEEEEEE,
+                        color =
+                        if (dashboardScreenState.selectedVehicle.vehicleId != "" &&
+                                    dashboardScreenState.note != "" && dashboardScreenState.imageUri != "") cEEEEEE
+                        else cmykRed,
+
                         fontSize = 16.sp
                     )
                 }
@@ -442,8 +394,8 @@ fun AddReportFormForPreview(
                     onClick = {}
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ShoppingCart,
-                        contentDescription = "Date"
+                        imageVector = Icons.Rounded.DirectionsCar,
+                        contentDescription = "Vehicle"
                     )
                 }
             },

@@ -95,13 +95,33 @@ class AddReportRepositoryImpl(
                 httpClient.submitFormWithBinaryData(
                     url = EndPoints.mainUrl + EndPoints.addLaporan,
                     formData = formData {
-                        append("vehicleId", addReportEntity.vehicleId)
-                        append("note", addReportEntity.note)
-                        append("userId", addReportEntity.userId)
-                        append("photo", fileByteArray,
+                        append("\"vehicleId\"", "\"${addReportEntity.vehicleId}\"",
                             Headers.build {
-                                append(HttpHeaders.ContentType, "image/jpeg")
+                                append(HttpHeaders.ContentType, "multipart/form-data")
 //                                \"ktor_logo.png\"
+//                                append(HttpHeaders.ContentDisposition, "name = \"$fileName\"")
+                            }
+                        )
+
+                        append("\"note\"", "\"${addReportEntity.note}\"",
+                            Headers.build {
+                                append(HttpHeaders.ContentType, "multipart/form-data")
+//                                \"ktor_logo.png\"
+//                                append(HttpHeaders.ContentDisposition, "name = \"$fileName\"")
+                            }
+                        )
+                        append("\"userId\"", "\"${addReportEntity.userId}\"",
+                            Headers.build {
+                                append(HttpHeaders.ContentType, "multipart/form-data")
+//                                \"ktor_logo.png\"
+//                                append(HttpHeaders.ContentDisposition, "name = \"$fileName\"")
+                            }
+                        )
+                        append("\"photo\"", fileByteArray,
+                            Headers.build {
+                                append(HttpHeaders.ContentType, "multipart/form-data")
+//                                \"ktor_logo.png\"
+                                append(HttpHeaders.ContentDisposition, "attachment")
                                 append(HttpHeaders.ContentDisposition, "filename = \"$fileName\"")
                             }
                         )
