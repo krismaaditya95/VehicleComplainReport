@@ -2,6 +2,7 @@ package com.krismaaditya.vcr.main.presentation.dashboard
 
 import android.app.Activity
 import androidx.camera.core.ImageCapture
+import com.krismaaditya.vcr.main.domain.entity.VehicleEntity
 import com.krismaaditya.vcr.main.presentation.camera.CameraScreenAction
 
 sealed interface DashboardScreenAction {
@@ -21,11 +22,15 @@ sealed interface DashboardScreenAction {
         val note: String
     ): DashboardScreenAction
 
+    data class OnVehicleSelected(
+        val vehicle: VehicleEntity
+    ): DashboardScreenAction
+
     data class TakePicture(
         val imageCapture: ImageCapture?,
         val activity: Activity,
         val callback: () -> Unit
     ): DashboardScreenAction
 
-    data object OnFormSaved: DashboardScreenAction
+    data object OnFormSubmitted: DashboardScreenAction
 }

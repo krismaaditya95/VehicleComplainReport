@@ -21,7 +21,7 @@ class ReportListRepositoryImpl(
 
     private suspend fun getReportListFromRemote(): List<ReportEntity>{
         val reportList: List<ReportDto> = httpClient.get(EndPoints.mainUrl + EndPoints.getAllReport){
-            parameter(key = "userId", value = Keys.apiKey)
+            parameter(key = "userId", value = Keys.userId)
         }.body()
         return reportList.map { it.toReportEntity() }
     }

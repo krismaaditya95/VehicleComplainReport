@@ -93,6 +93,7 @@ fun CameraScreen(
                             }
 
                         imageCapture = ImageCapture.Builder()
+//                            .setCaptureMode(CAPT)
                             .build()
 
                         try{
@@ -151,10 +152,10 @@ fun CameraScreen(
                         )
                     }
 
-                    Text(
-                        text = "Bitmap : ${dashboardScreenViewModel.state.rawBitmap}",
-                        color = cmykRed
-                    )
+//                    Text(
+//                        text = "Bitmap : ${dashboardScreenViewModel.state.rawBitmap}",
+//                        color = cmykRed
+//                    )
                 }
             }
 

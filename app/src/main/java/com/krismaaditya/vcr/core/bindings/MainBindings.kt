@@ -1,11 +1,14 @@
 package com.krismaaditya.vcr.core.bindings
 
+import com.krismaaditya.vcr.main.data.repository.AddReportRepositoryImpl
 import com.krismaaditya.vcr.main.data.repository.CameraRepositoryImpl
 import com.krismaaditya.vcr.main.data.repository.ReportListRepositoryImpl
 import com.krismaaditya.vcr.main.data.repository.VehicleListRepositoryImpl
+import com.krismaaditya.vcr.main.domain.repository.AddReportRepository
 import com.krismaaditya.vcr.main.domain.repository.CameraRepository
 import com.krismaaditya.vcr.main.domain.repository.ReportListRepository
 import com.krismaaditya.vcr.main.domain.repository.VehicleListRepository
+import com.krismaaditya.vcr.main.domain.usecase.AddReportUseCase
 import com.krismaaditya.vcr.main.domain.usecase.CameraUseCase
 import com.krismaaditya.vcr.main.domain.usecase.GetAllReportUseCase
 import com.krismaaditya.vcr.main.domain.usecase.GetAllVehicleUseCase
@@ -70,6 +73,7 @@ val mainBindings = module {
     singleOf(::VehicleListRepositoryImpl).bind<VehicleListRepository>()
     singleOf(::ReportListRepositoryImpl).bind<ReportListRepository>()
     singleOf(::CameraRepositoryImpl).bind<CameraRepository>()
+    singleOf(::AddReportRepositoryImpl).bind<AddReportRepository>()
 
     single{
         GetAllVehicleUseCase(get())
@@ -81,5 +85,9 @@ val mainBindings = module {
 
     single{
         CameraUseCase(get())
+    }
+
+    single{
+        AddReportUseCase(get())
     }
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +20,9 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -45,6 +48,7 @@ import com.krismaaditya.vcr.config.ScreenRoutes
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenAction
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenState
 import com.krismaaditya.vcr.main.presentation.dashboard.DashboardScreenViewModel
+import com.krismaaditya.vcr.ui.theme.cC73659
 import com.krismaaditya.vcr.ui.theme.cDC5F00
 import com.krismaaditya.vcr.ui.theme.cEEEEEE
 import com.krismaaditya.vcr.ui.theme.cmykGreen
@@ -101,7 +105,7 @@ fun AddReportForm(
         var isExpanded by remember { mutableStateOf(false) }
 
         OutlinedTextField(
-            value = dashboardScreenState.selectedVehicle,
+            value = dashboardScreenState.selectedVehicle.type,
 //            value = "Pilih Kendaraan",
             onValueChange = {
 
@@ -148,12 +152,26 @@ fun AddReportForm(
             )
         )
         DropdownMenu(
+            modifier = Modifier
+                .fillMaxWidth(),
             expanded = isExpanded,
             onDismissRequest = {
                 isExpanded = false
             }
         ) {
-
+            dashboardScreenState.vehicleList.forEachIndexed { index, vehicleEntity ->
+                DropdownMenuItem(
+                    text = {
+                        Text(text = vehicleEntity.type)
+                    },
+                    onClick = {
+                        dashboardScreenAction(DashboardScreenAction.OnVehicleSelected(
+                            vehicle = vehicleEntity)
+                        )
+                        isExpanded = false
+                    }
+                )
+            }
         }
 
 
@@ -204,7 +222,10 @@ fun AddReportForm(
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = cmykGreen,
                 focusedBorderColor = cmykGreen
-            )
+            ),
+//            supportingText = {
+//
+//            }
         )
 
         // -------------
@@ -216,7 +237,21 @@ fun AddReportForm(
                 .border(1.dp, cDC5F00)
         ){
             Text(
-                text = "RAW BITMAP : ${dashboardScreenState.rawBitmap.toString()}",
+                text = "Image Uri : ${dashboardScreenState.imageUri}",
+                color = cDC5F00,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier
+                    .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .border(1.dp, cDC5F00)
+        ){
+            Text(
+                text = "Selected Vehicle ID : ${dashboardScreenState.selectedVehicle.vehicleId}",
                 color = cDC5F00,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -246,7 +281,7 @@ fun AddReportForm(
                     .width(100.dp)
                     .height(100.dp)
                     .border(1.dp, cDC5F00, shape = RoundedCornerShape(4.dp)),
-                model = dashboardScreenState.rawBitmap,
+                model = dashboardScreenState.imageUri,
                 contentDescription = "",
             )
 
@@ -297,7 +332,7 @@ fun AddReportForm(
         // --------------------
         Button(
             onClick = {
-//                onAddReportClick()
+                dashboardScreenAction(DashboardScreenAction.OnFormSubmitted)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -307,13 +342,41 @@ fun AddReportForm(
                 .buttonColors(
                     containerColor = cmykRed
                 ),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
+            enabled = !dashboardScreenState.isFormSubmitLoading
         ) {
-            Text(
-                text = "Kirim Laporan",
-                color = cEEEEEE,
-                fontSize = 16.sp
-            )
+
+            when{
+                dashboardScreenState.isFormSubmitLoading -> {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .width(20.dp),
+//                                .align(Alignment.CenterVertically)
+//                                .padding(end = 10.dp),
+                            color = cC73659
+                        )
+
+                        Text(
+                            text = "mengirim...",
+                            color = cC73659,
+                            fontSize = 16.sp
+                        )
+
+                    }
+                }
+
+                !dashboardScreenState.isFormSubmitLoading -> {
+                    Text(
+                        text = "Kirim Laporan",
+                        color = cEEEEEE,
+                        fontSize = 16.sp
+                    )
+                }
+            }
         }
     }
 }
